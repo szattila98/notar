@@ -9,7 +9,6 @@
 .env.*.local
 
 # Database
-pgdata/
 *.db
 *.db-shm
 *.db-wal
@@ -27,3 +26,6 @@ Thumbs.db
 
 # SQLX
 .sqlx/
+
+# Docker
+docker/mnt

@@ -8,7 +8,7 @@ use axum::{
 mod auth;
 mod health;
 mod middleware_auth;
-mod tasks;
+mod notes;
 
 
 pub use auth::register;
@@ -20,8 +20,8 @@ use crate::state::AppState;
 pub fn routes() -> Router<AppState> {
 
     let task_router = Router::new()
-    .route("/", post(tasks::routes::create).get(tasks::routes::list))
-    .route("/{id}", put(tasks::routes::update).delete(tasks::routes::delete));
+    .route("/", post(notes::routes::create).get(notes::routes::list))
+    .route("/{id}", put(notes::routes::update).delete(notes::routes::delete));
 
     Router::new()
         .route("/", get(root))

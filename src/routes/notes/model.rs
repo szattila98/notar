@@ -4,10 +4,10 @@ use chrono::DateTime;
 use chrono::Utc;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Task {
+pub struct Note {
     pub id: Uuid,
-    pub user_id: Uuid,
     pub title: String,
-    pub done: bool,
+    pub content: serde_json::Value,
+    pub created_by: Uuid,
     pub created_at: DateTime<Utc>,
 }

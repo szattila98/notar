@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::state::AppState;
 use uuid::Uuid;
 use argon2::{Argon2, PasswordHasher, PasswordVerifier };
-use rand::rngs::OsRng;
+use rand::{TryRng, rngs::SysRng};
 use argon2::password_hash::{SaltString, PasswordHash};
 use jsonwebtoken::{EncodingKey, Header, encode };
 use std::env;
@@ -49,7 +49,9 @@ pub async fn register(
         return (StatusCode::BAD_REQUEST, "invalid payload").into_response();
     }
 
-    let salt = SaltString::generate(&mut OsRng);
+    let mut salt_bytes = [0u8; 16];
+    SysRng.try_fill_bytes(&mut salt_bytes).expect("salt string generation failed");
+    let salt = SaltString::encode_b64(&salt_bytes).unwrap();
     let argon = Argon2::default();
 
     let password_hash = argon.hash_password(payload.password.as_bytes(), &salt).unwrap().to_string();
